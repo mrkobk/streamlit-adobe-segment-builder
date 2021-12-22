@@ -11,12 +11,20 @@ import os
 import json
 import pandas as pd
 from copy import deepcopy
-
+from PIL import Image
+import requests
+from io import BytesIO
 
 # In[14]:
 
-st.set_page_config(layout="wide")	
+st.set_page_config(layout="wide")
 st.title("Adobe Segment Builder")
+
+logo_url = requests.get("https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/2560px-Adidas_Logo.svg.png")
+logo = Image.open(BytesIO(logo_url.content))
+
+st.sidebar.image(logo, width=90)
+
 menu = ["ag-adi-ar-prod",
 		"ag-adi-au-prod",
 		"ag-adi-be-prod",
@@ -69,18 +77,18 @@ adobe_suite = st.sidebar.selectbox("Select Adobe Property",menu)
     
 st.subheader(f"Segment to be populated in {adobe_suite} Property")
                 
-segment_name = st.text_input("Enter Segment Name", "")
-segment_description = st.text_input("Enter Segment Description (optional)", "")
-segment_owner_id = st.selectbox('Enter User Account you want the Segment to populate in:',
-                          ('Mirko', 'Jur', 'Melania'), key="UserId")
+segment_name = st.sidebar.text_input("Enter Segment Name", "")
+segment_description = st.sidebar.text_input("Enter Segment Description (optional)", "")
+segment_owner_id = st.sidebar.selectbox('Enter User Account you want the Segment to populate in:',
+                          ('Mirko', 'Jur', 'Mel'), key="UserId")
 
 st.write('This segment will be created for:', segment_owner_id)
     
 dct = {
-    
        "Mirko": 200132409,
        "Jur":200185531,
-       "Melania":200264507
+       "Mel":200264507
+       
        }
 
 segment_owner_id = dct.get(segment_owner_id)
@@ -119,7 +127,6 @@ if upload is not None:
           
     
     lst = lst.iloc[:,0].tolist()
-    #lst = lst['variables/entryprop34'].tolist()
     chunks = [lst[i:i + 500] for i in range(0, len(lst), 500)]
     
     for i in range(len(chunks)):
@@ -137,10 +144,9 @@ if upload is not None:
     	raw["definition"]["container"]["pred"]["preds"][i]["list"] = chunks[i]
     	url_counter += len(raw["definition"]["container"]["pred"]["preds"][i]["list"])
     	
-    st.success(f'toBeCopied.json was generated with {url_counter} entries. Copy by clicking the blue icon next to the first curly bracket below. Then head over to https://adobedocs.github.io/analytics-2.0-apis/#/segments/segments_createSegment')
+    st.success(f'toBeCopied.json was generated with {url_counter} entries and is available for download. Double Click on the file and copy the output. Then head over to https://adobedocs.github.io/analytics-2.0-apis/#/segments/segments_createSegment')
     st.write(raw)
 				
-#st.download_button('Download JSON payload', raw, 'application/json')  # Defaults to 'text/plain'
 
 
     
