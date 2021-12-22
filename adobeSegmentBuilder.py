@@ -80,15 +80,15 @@ st.subheader(f"Segment to be populated in {adobe_suite} Property")
 segment_name = st.sidebar.text_input("Enter Segment Name", "")
 segment_description = st.sidebar.text_input("Enter Segment Description (optional)", "")
 segment_owner_id = st.sidebar.selectbox('Enter User Account you want the Segment to populate in:',
-                          ('Mirko', 'Jur', 'Mel'), key="UserId")
+                          ('Mirko', 'Jur', 'Karim', 'Mel'), key="UserId")
 
 st.write('This segment will be created for:', segment_owner_id)
     
 dct = {
        "Mirko": 200132409,
        "Jur":200185531,
-       "Mel":200264507
-       
+       "Mel":200264507,
+       "Karim":200278815
        }
 
 segment_owner_id = dct.get(segment_owner_id)
@@ -104,7 +104,8 @@ if upload is not None:
                    }
     #st.write(loadcsvpreview(upload), width=300)
     lst = pd.read_csv(upload)
-    st.dataframe(lst.head(10))
+    st.write("Input Preview (Top 5 rows)")
+    st.dataframe(lst.head(5))
     
     raw = {'definition': {'container': {'context': 'hits',
            'func': 'container',
@@ -144,7 +145,8 @@ if upload is not None:
     	raw["definition"]["container"]["pred"]["preds"][i]["list"] = chunks[i]
     	url_counter += len(raw["definition"]["container"]["pred"]["preds"][i]["list"])
     	
-    st.success(f'toBeCopied.json was generated with {url_counter} entries and is available for download. Double Click on the file and copy the output. Then head over to https://adobedocs.github.io/analytics-2.0-apis/#/segments/segments_createSegment')
+    st.success(f'JSON payload was generated with {url_counter} entries and is available for download below')
+    st.info('Copy JSON by clicking icon next to first curly bracket. Then head over to https://adobedocs.github.io/analytics-2.0-apis/#/segments/segments_createSegment')
     st.write(raw)
 				
 
