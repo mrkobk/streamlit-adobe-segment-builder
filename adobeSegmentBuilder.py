@@ -137,7 +137,7 @@ if upload is not None:
     	raw["definition"]["container"]["pred"]["preds"][i]["list"] = chunks[i]
     	url_counter += len(raw["definition"]["container"]["pred"]["preds"][i]["list"])
     	
-    st.success(f'toBeCopied.json was generated with {url_counter} entries and is available for download. Double Click on the file and copy the output. Then head over to https://adobedocs.github.io/analytics-2.0-apis/#/segments/segments_createSegment')
+    st.success(f'toBeCopied.json was generated with {url_counter} entries. Copy by clicking the blue icon next to the first curly bracket below. Then head over to https://adobedocs.github.io/analytics-2.0-apis/#/segments/segments_createSegment')
     st.write(raw)
 				
 #st.download_button('Download JSON payload', raw, 'application/json')  # Defaults to 'text/plain'
