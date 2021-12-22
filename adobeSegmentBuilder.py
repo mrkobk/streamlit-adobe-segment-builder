@@ -17,7 +17,6 @@ from copy import deepcopy
 
 st.set_page_config(layout="wide")	
 st.title("Adobe Segment Builder")
-st.sidebar.image("/Users/mirko/adidas.png", width=90)
 menu = ["ag-adi-ar-prod",
 		"ag-adi-au-prod",
 		"ag-adi-be-prod",
